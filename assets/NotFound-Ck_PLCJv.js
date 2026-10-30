@@ -1,0 +1,1 @@
+import{c as s,a as n,t,u as e,d as o,i as c,w as r,E as u,o as _,b as l}from"./index-BSyH0CoC.js";const p={class:"panel empty-state"},k={__name:"NotFound",setup(d){return(i,m)=>{const a=u("RouterLink");return _(),s("div",p,[n("h2",null,t(e(o)("notFound")),1),c(a,{class:"button",to:"/"},{default:r(()=>[l(t(e(o)("back")),1)]),_:1})])}}};export{k as default};
