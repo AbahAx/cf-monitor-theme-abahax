@@ -1,5 +1,7 @@
 # AbahAx 极简主题 · CF Server Monitor 移植版
 
+**CF 后台安装地址：[https://github.com/AbahAx/cf-monitor-theme-abahax/tree/dist](https://github.com/AbahAx/cf-monitor-theme-abahax/tree/dist)**。在内置后台 → 主题商店 → 自定义主题地址中填写此链接，预览后应用。无需下载 ZIP、配置 API 地址或开启 GitHub Pages。
+
 从用户提供的 `1.0.5-abahax.3/theme.tar.gz` 移植，保留黑白极简样式、2px 微圆角、点阵背景、平面世界地图、汇总看板、分组筛选、节点卡片和历史详情。使用 Vue 3 + Vite 重新实现，适配 CF Server Monitor 的公开 API。
 
 原版主题包 SHA-256：`a8dee8c86dc676169a13e7d531ebb638c1436d56a8d1f8be36c23897b0efd906`。
