@@ -1,0 +1,58 @@
+name: Build theme to dist branch
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: theme-dist
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Build same-origin theme or configured standalone page
+        shell: bash
+        run: |
+          if [ -n "${API_BASE:-}" ]; then
+            npm run build:github-page
+          else
+            npm run build
+          fi
+        env:
+          # Leave empty for installation through the CF Monitor theme store.
+          API_BASE: ${{ secrets.API_BASE }}
+          TITLE: ${{ secrets.TITLE }}
+          BACKGROUND_IMAGE: ${{ secrets.BACKGROUND_IMAGE }}
+          CSP_API: ${{ secrets.CSP_API }}
+          CSP_STATIC: ${{ secrets.CSP_STATIC }}
+      - name: Append build, preserve dist history and source commit message
+        shell: bash
+        run: |
+          set -euo pipefail
+          git log -1 --format=%B "$GITHUB_SHA" > "$RUNNER_TEMP/source-message.txt"
+          destination="$RUNNER_TEMP/theme-dist"
+          if git ls-remote --exit-code --heads origin dist > /dev/null; then
+            git fetch origin dist
+            git worktree add -B dist "$destination" origin/dist
+          else
+            git worktree add --detach "$destination" "$GITHUB_SHA"
+            git -C "$destination" checkout --orphan dist
+          fi
+          git -C "$destination" rm -rf --ignore-unmatch .
+          cp -R dist/index.html dist/assets "$destination/"
+          git -C "$destination" config user.name "github-actions[bot]"
+          git -C "$destination" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C "$destination" add index.html assets
+          git -C "$destination" commit --allow-empty -F "$RUNNER_TEMP/source-message.txt"
+          git -C "$destination" push origin HEAD:dist

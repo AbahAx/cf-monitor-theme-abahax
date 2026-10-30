@@ -1,0 +1,24 @@
+import { computed } from 'vue'
+import { primary } from './monitor.js'
+export const english = computed(() => primary.value.default_language === 'en' || (primary.value.default_language !== 'zh' && primary.value.default_language !== 'zh-CN' && primary.value.default_language !== 'zh-TW' && !navigator.language.toLowerCase().startsWith('zh')))
+const dictionary = {
+  all: ['全部', 'All'], online: ['在线', 'Online'], offline: ['离线', 'Offline'], ungrouped: ['未分组', 'Ungrouped'], search: ['搜索节点 / 标签 / 系统…', 'Search nodes / tags / OS…'],
+  defaultSort: ['后台顺序', 'Server order'], name: ['名称', 'Name'], load: ['CPU 负载', 'CPU load'], memory: ['内存', 'Memory'], storage: ['硬盘', 'Storage'], traffic: ['月度流量', 'Monthly traffic'], expires: ['到期时间', 'Expiry'],
+  map: ['全球节点平面拓扑分布', 'Global node topology'], hideMap: ['收起地图', 'Hide map'], showMap: ['展开地图', 'Show map'], regions: ['地区测控列表', 'Region overview'], region: ['地区', 'Region'], clear: ['清除筛选', 'Clear filters'],
+  nodes: ['节点', 'Nodes'], peak: ['最高负载', 'Peak load'], network: ['实时网速', 'Live network'], totals: ['累计流量', 'Total traffic'], hardware: ['集群资源', 'Cluster resources'], cpu: ['CPU', 'CPU'], cores: ['核', 'cores'],
+  costs: ['月度费用', 'Monthly cost'], expiryRank: ['到期排行', 'Upcoming expiry'], free: ['免费', 'Free'], noPrice: ['未设置', 'Unset'], permanent: ['未设置到期', 'No expiry set'], expired: ['已过期', 'Expired'], days: ['天', 'days'],
+  latency: ['网络延迟', 'Network latency'], loss: ['丢包', 'Loss'], timeout: ['超时', 'Timeout'], window: ['窗口走势', 'Window trend'], back: ['返回列表', 'Back to servers'], detail: ['节点详情', 'Server detail'],
+  loading: ['正在连接监控节点…', 'Connecting to servers…'], empty: ['没有匹配的节点', 'No matching servers'], emptyHint: ['试试其他关键词或清除筛选。', 'Try another keyword or clear the filters.'], noHistory: ['该时间范围暂无历史数据', 'No history in this range'],
+  admin: ['管理后台', 'Admin'], settings: ['主题设置', 'Theme settings'], theme: ['切换深浅色', 'Toggle color scheme'],
+  connecting: ['连接中', 'Connecting'], live: ['实时连接', 'Live'], retrying: ['正在重连', 'Reconnecting'], disconnected: ['连接中断', 'Disconnected'], hidden: ['后台暂停', 'Paused in background'], idle: ['等待连接', 'Waiting'], verification: ['等待验证', 'Verification required'], invalidMessage: ['数据格式异常', 'Invalid live data'], authError: ['连接认证失败，请前往管理后台登录', 'Authentication failed. Sign in through Admin'],
+  timeoutTitle: ['实时连接已达到站点时限', 'Live connection time limit reached'], timeoutHint: ['已保留最后一次数据。点击继续后恢复实时更新。', 'Last data retained. Continue to resume live updates.'], resume: ['继续连接', 'Continue'], retry: ['重试', 'Retry'],
+  verify: ['请完成人机验证', 'Complete verification'], verifyHint: ['验证通过后自动载入数据。', 'Data will load after verification.'], verifyFailed: ['人机验证加载失败', 'Verification failed to load'],
+  save: ['保存到服务端', 'Save to server'], saving: ['正在保存…', 'Saving…'], saved: ['主题配置已保存', 'Theme settings saved'], close: ['关闭', 'Close'], summary: ['显示汇总看板', 'Show summary'], globe: ['显示拓扑地图', 'Show topology map'], showLatency: ['显示卡片延迟', 'Show card latency'], adminPrices: ['金额仅管理员可见', 'Prices visible only to admins'], opacity: ['面板不透明度', 'Panel opacity'], offlinePlacement: ['离线节点位置', 'Offline placement'], mixed: ['按后台顺序混排', 'Use server order'], bottom: ['全部置后', 'Place last'], separate: ['分区展示', 'Separate section'], pingLines: ['展示的延迟线路（逗号分隔，留空显示前三项）', 'Latency probes (comma-separated; blank for first three)'],
+  resources: ['资源曲线', 'Resource history'], netHistory: ['网络吞吐', 'Network throughput'], pingHistory: ['延迟与丢包', 'Latency and packet loss'], io: ['磁盘 IO', 'Disk I/O'], gpu: ['GPU 使用率', 'GPU usage'], swap: ['交换内存', 'Swap'],
+  uptime: ['运行时间', 'Uptime'], processes: ['进程', 'Processes'], connection: ['连接数', 'Connections'], system: ['系统', 'OS'], arch: ['架构', 'Architecture'], kernel: ['内核', 'Kernel'], agent: ['探针版本', 'Agent'], boot: ['启动时间', 'Boot time'], billing: ['计费周期', 'Billing cycle'], renewal: ['自动续费', 'Auto renewal'], yes: ['是', 'Yes'], no: ['否', 'No'], source: ['数据源', 'Source'],
+  notFound: ['页面不存在', 'Page not found'], nodeNotFound: ['节点不存在或未公开', 'Server not found or not public'], mapHint: ['点击亮点或地区筛选节点', 'Select a beacon or region to filter'], mapUnknown: ['未定位', 'Unmapped'], minute10: ['10 分钟', '10 minutes'], minute30: ['30 分钟', '30 minutes'], hour: ['小时', 'hours'],
+  ct: ['电信', 'China Telecom'], cu: ['联通', 'China Unicom'], cm: ['移动', 'China Mobile'], bd: ['BGP', 'BGP'], backendSettings: ['标题、背景图和默认语言请在 CF 探针后台外观设置中调整。', 'Set title, background and default language in CF Monitor Admin → Appearance.'],
+  byCurrency: ['按原币种分别汇总', 'Totals grouped by currency'], noSupportedData: ['暂无数据', 'No data'], lastUpdate: ['最后更新', 'Last update'], read: ['读取', 'Read'], write: ['写入', 'Write']
+}
+export function t(key) { return dictionary[key]?.[english.value ? 1 : 0] || key }
+export function probeName(config, key) { return config?.[key.startsWith('node_') ? `${key}_name` : `custom_${key}_name`] || (key.startsWith('node_') ? `Node ${key.at(-1)}` : t(key)) }

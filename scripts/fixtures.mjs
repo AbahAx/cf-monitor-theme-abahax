@@ -1,0 +1,14 @@
+export function fixtures() {
+  const now = Date.now()
+  const base = { server_group: 'VPS', tags: 'production,edge', price: '12', billing_cycle: 'month', currency: '$', auto_renewal: '0', expire_date: '2027-06-01', traffic_limit: '1024', traffic_calc_type: 'total', reset_day: 1, cpu: 12.4, load_avg: '0.10 0.20 0.30', ram_total: 4096, ram_used: 1024, swap_total: 1024, swap_used: 32, disk_total: 81920, disk_used: 18900, net_in_speed: 524288, net_out_speed: 262144, net_rx: 64 * 1024 ** 3, net_tx: 37 * 1024 ** 3, net_rx_monthly: 24 * 1024 ** 3, net_tx_monthly: 17 * 1024 ** 3, cpu_cores: 2, cpu_info: 'AMD EPYC 7B13', os: 'Debian 12', kernel_version: '6.1.0-22-amd64', arch: 'x86_64', region: 'JP', ip_v4: '1', ip_v6: '0', boot_time: String(now - 14 * 86400000), last_updated: now, timestamp: now, agent_version: '1.3.3', processes: 89, tcp_conn: 23, udp_conn: 4, ping_ct: 0, ping_cu: null, ping_cm: false, loss_ct: 0, loss_cu: null, loss_cm: false, disk: { read_bps: 4096, write_bps: 2048, read_iops: 3, write_iops: 2, await_ms: 1, util: 3 }, gpu_info: [{ id: '0', name: 'NVIDIA RTX 3060', info: 12 }] }
+  const servers = [
+    { ...base, id: 'jp-24', name: '日本JP Lightsail - AWS', server_group: 'AWS', sort_order: 20 },
+    { ...base, id: 'us-3', name: 'NoSLA - SJC', region: 'US', os: 'Ubuntu 24.04', cpu: 5.2, tags: 'compute', cpu_cores: 4 },
+    { ...base, id: 'sg-17', name: '新加坡SG Lightsail - AWS', server_group: 'AWS', region: 'SG', cpu: 1.8, ram_used: 450 },
+    { ...base, id: 'us-2', name: 'US.LA.TRI.Basic', region: 'US', cpu: 0, last_updated: now - 600000, timestamp: now - 600000, tags: 'backup', net_in_speed: 0, net_out_speed: 0, disk: undefined, gpu_info: [] },
+    { ...base, id: 'de-10', name: 'Ciallo - DE', region: 'DE', cpu: 23.7, tags: 'storage', disk_used: 55000, cpu_cores: 8, price: '-1', auto_renewal: '1' },
+    { ...base, id: 'cn-8', name: 'home-lab · Shanghai', region: 'CN', server_group: 'HOME', cpu: 8.4, cpu_cores: 16, ram_total: 32768, ram_used: 7000, price: '', tags: 'homelab' }
+  ].map(s => ({ ...s, ping: Array.from({ length: 20 }, (_, i) => ({ ts: now - (20 - i) * 360000, ct: i === 10 ? null : i === 19 ? 0 : 36 + (i % 4) * 7, cu: i % 5 ? 52 + i : null, cm: false })), loss: Array.from({ length: 20 }, (_, i) => ({ ts: now - (20 - i) * 360000, ct: 0, cu: i % 5 ? 0 : null, cm: false })) }))
+  const rows = id => Array.from({ length: 60 }, (_, i) => ({ ...servers.find(s => s.id === id), timestamp: now - (60 - i) * 10000, cpu: 10 + (i % 17), ram_used: 800 + i * 7, net_in_speed: 200000 + (i % 11) * 120000, net_out_speed: 100000 + (i % 7) * 50000, ping_ct: i === 20 ? null : i % 5 ? 28 + i % 13 : 0, ping_cu: null, ping_cm: false, loss_ct: 0, loss_cu: null, loss_cm: false, gpu_info: JSON.stringify([{ id: '0', name: 'NVIDIA RTX 3060', info: 10 + i % 20 }]) }))
+  return { servers, rows }
+}

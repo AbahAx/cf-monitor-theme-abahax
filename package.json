@@ -1,0 +1,18 @@
+{
+  "name": "cf-monitor-theme-abahax",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --configLoader runner --host 127.0.0.1",
+    "build": "vite build --configLoader runner",
+    "build:github-page": "vite build --configLoader runner --mode github-page",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node --test test/*.test.mjs",
+    "test:browser": "node scripts/browser-test.mjs",
+    "package": "npm run test && npm run build && node scripts/package.mjs"
+  },
+  "dependencies": { "vue": "^3.5.0", "vue-router": "^4.4.0" },
+  "devDependencies": { "@vitejs/plugin-vue": "^6.0.0", "@playwright/test": "^1.56.0", "fflate": "^0.8.2", "vite": "^6.0.0", "ws": "^8.18.0" },
+  "engines": { "node": ">=22" }
+}
